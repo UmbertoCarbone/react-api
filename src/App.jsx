@@ -1,35 +1,88 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import funzioni di React
+import { useState, useEffect } from "react"
+
+//url attori e attrici
+const urlActor = ("https://lanciweb.github.io/demo/api/actors/")
+const urlActresses = ("https://lanciweb.github.io/demo/api/actresses/")
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  // card full di ogni attore
+  const [cardActor, setCardActor] = useState([])
+  const [CardActresses, setCardActresses] = useState([])
+
+  //richiamo api con il fetch
+  function fetchActor() {
+    fetch(urlActor)
+      .then((res) => res.json())
+      .then(setCardActor)
+  }
+
+  function fetchActresses() {
+    fetch(urlActresses)
+      .then((res) => res.json())
+      .then(setCardActresses)
+  }
+
+
+  useEffect(fetchActor, []);
+  useEffect(fetchActresses, []);
 
   return (
+    /* creiamo un map per gli attori uomo dove ogni card contiene: foto/nome/annonascita/nazionalita'/Riconoscimenti/Biografia */
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <h1>ATTORI</h1>
+      <div className="row">
+        {cardActor.map(actor => (
+          <div className="col-md-3 mb-3" key={actor.id}>
+            <div className="card">
+              <img src={actor.image} className="card-img-top" alt={actor.name} style={{ height: '250px', objectFit: 'cover' }} />
+              <div className="card-header">
+                {actor.name}
+              </div>
+              <div className="card-body">
+                <p className="card-text"><strong>Anno nascita:</strong> {actor.birth_year}</p>
+                <p className="card-text"><strong>Nazionalità:</strong> {actor.nationality}</p>
+                <p className="card-text"><strong>Riconoscimenti:</strong> {actor.awards.join(' - ')}</p>
+                <p className="card/text"><strong>Biongrafia:</strong>{actor.biography}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+        <h1>ATTRICI</h1>
+        {CardActresses.map(actresses => (
+          <div className="card">
+            <img src={actresses.image} className="card-img-top" alt={actresses.name} style={{ height: '250px', objectFit: 'cover' }} />
+            <div className="card-header">
+              {actresses.name}
+            </div>
+            <div className="card-body">
+              <p className="card-text"><strong>Anno nascita:</strong> {actresses.birth_year}</p>
+              <p className="card-text"><strong>Nazionalità:</strong> {actresses.nationality}</p>
+              <p className="card-text"><strong>Riconoscimenti:</strong> {actresses.awards.join(' - ')}</p>
+              <p className="card-text"><strong>Biongrafia:</strong>{actresses.biography}</p>
+            </div>
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
-
 export default App
+
+
+
+
+
+
+
+/*  <div className="container">
+        <div className="row">
+          
+          <div className="col">
+            <div className="card">
+
+            </div>
+          </div>
+        </div>
+      </div> */
