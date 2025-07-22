@@ -11,6 +11,7 @@ function App() {
   const [cardActor, setCardActor] = useState([])
   const [CardActresses, setCardActresses] = useState([])
 
+
   //richiamo api con il fetch
   function fetchActor() {
     fetch(urlActor)
@@ -29,7 +30,7 @@ function App() {
   useEffect(fetchActresses, []);
 
   return (
-    /* creiamo un map per gli attori uomo dove ogni card contiene: foto/nome/annonascita/nazionalita'/Riconoscimenti/Biografia */
+    //creiamo un map per gli attori uomo dove ogni card contiene: foto/nome/annonascita/nazionalita'/Riconoscimenti/Biografia 
     <>
       <h1>ATTORI</h1>
       <div className="row">
@@ -49,18 +50,21 @@ function App() {
             </div>
           </div>
         ))}
+
         <h1>ATTRICI</h1>
         {CardActresses.map(actresses => (
-          <div className="card">
-            <img src={actresses.image} className="card-img-top" alt={actresses.name} style={{ height: '250px', objectFit: 'cover' }} />
-            <div className="card-header">
-              {actresses.name}
-            </div>
-            <div className="card-body">
-              <p className="card-text"><strong>Anno nascita:</strong> {actresses.birth_year}</p>
-              <p className="card-text"><strong>Nazionalità:</strong> {actresses.nationality}</p>
-              <p className="card-text"><strong>Riconoscimenti:</strong> {actresses.awards.join(' - ')}</p>
-              <p className="card-text"><strong>Biongrafia:</strong>{actresses.biography}</p>
+          <div className="col-md-3 mb-3" key={actresses.id}>
+            <div className="card">
+              <img src={actresses.image} className="card-img-top" alt={actresses.name} style={{ height: '250px', objectFit: 'cover' }} />
+              <div className="card-header">
+                {actresses.name}
+              </div>
+              <div className="card-body">
+                <p className="card-text"><strong>Anno nascita:</strong> {actresses.birth_year}</p>
+                <p className="card-text"><strong>Nazionalità:</strong> {actresses.nationality}</p>
+                <p className="card-text"><strong>Riconoscimenti:</strong> {actresses.awards.split(", ").join(' - ')}</p>
+                <p className="card-text"><strong>Biongrafia:</strong>{actresses.biography}</p>
+              </div>
             </div>
           </div>
         ))}
